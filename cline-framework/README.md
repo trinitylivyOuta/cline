@@ -2,8 +2,22 @@
 
 A lightweight, reusable agent framework extracted from [Cline](https://github.com/cline/cline) that enables building AI agents that can execute in both VSCode extensions and standalone terminal applications.
 
+## ⭐ NEW: Layered Architecture
+
+The framework now provides **4 layers of abstraction**, allowing you to choose the right level of complexity:
+
+| Layer | What | Use When |
+|-------|------|----------|
+| **Layer 1** | **LLMClient** - Raw API access | You need direct API control |
+| **Layer 2** | **SimpleLLM** - Request-response | Building chatbots, Q&A systems |
+| **Layer 3** | **ClineAgent** - Agentic loop | Need autonomous task execution |
+| **Layer 4** | **AgentOrchestrator** - Multi-agent | Coordinating specialized agents |
+
+See [Layered Architecture Guide](./docs/LAYERED_GUIDE.md) for details and examples.
+
 ## ✨ Features
 
+- 🎯 **Layered Architecture**: Use what you need - from raw APIs to multi-agent orchestration
 - 🤖 **Unified Agent Interface**: Single API for creating conversational AI agents
 - 🔌 **Multi-Provider Support**: Works with Anthropic Claude, OpenAI GPT, and more
 - 🛠️ **Extensible Tool System**: Built-in tools for file operations, commands, and user interaction
@@ -60,16 +74,107 @@ node your-agent.js
 
 That's it! The agent will autonomously create the file using the LLM and built-in tools.
 
+## 🏗️ Using Different Layers
+
+### Layer 1: Direct API Access
+
+For maximum control and minimal overhead:
+
+```typescript
+import { LLMClient } from '@cline/framework';
+
+const client = new LLMClient({
+  provider: 'anthropic',
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  model: 'claude-3-5-sonnet-20241022'
+});
+
+// Stream response
+for await (const chunk of client.streamCompletion({
+  messages: [{ role: 'user', content: 'Hello!' }]
+})) {
+  if (chunk.type === 'text_delta') {
+    process.stdout.write(chunk.text);
+  }
+}
+```
+
+### Layer 2: Simple Chatbot
+
+For conversation management without autonomy:
+
+```typescript
+import { SimpleLLM } from '@cline/framework';
+
+const app = new SimpleLLM({
+  provider: 'anthropic',
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  model: 'claude-3-5-sonnet-20241022',
+  systemPrompt: 'You are a helpful assistant.'
+});
+
+// Conversation is managed automatically
+const response1 = await app.sendMessage('What is TypeScript?');
+const response2 = await app.sendMessage('Give me an example');
+```
+
+### Layer 3: Autonomous Agent
+
+For iterative task execution (shown in Quick Start above):
+
+```typescript
+import { ClineAgent } from '@cline/framework';
+import { TerminalHost } from '@cline/framework/host';
+
+const agent = new ClineAgent({
+  apiProvider: 'anthropic',
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  model: 'claude-3-5-sonnet-20241022',
+  host: new TerminalHost()
+});
+
+// Agent iterates until task complete
+const result = await agent.executeTask('Create a Node.js server');
+```
+
+### Layer 4: Multi-Agent Orchestration
+
+For coordinating specialized agents:
+
+```typescript
+import { AgentOrchestrator } from '@cline/framework';
+
+const orchestrator = new AgentOrchestrator();
+
+// Create specialized agents
+const coder = orchestrator.createAgent({ name: 'coder', /* config */ });
+const reviewer = orchestrator.createAgent({ name: 'reviewer', /* config */ });
+
+// Define workflow
+const workflow = orchestrator.createWorkflow({
+  name: 'Development Pipeline',
+  steps: [
+    { id: 'code', agent: 'coder', task: 'Implement {{input}}' },
+    { id: 'review', agent: 'reviewer', task: 'Review code', dependsOn: ['code'] }
+  ]
+});
+
+// Execute
+const result = await orchestrator.execute(workflow, 'user authentication');
+```
+
 ## 📚 Documentation
 
 ### Getting Started
 - **[Getting Started Tutorial](./docs/GETTING_STARTED.md)** ⭐ - Step-by-step guide (15 minutes)
+- **[Layered Architecture Guide](./docs/LAYERED_GUIDE.md)** ⭐ NEW - Choose the right layer
 - **[Complete Usage Guide](./docs/USAGE_GUIDE.md)** - Comprehensive guide with examples
 - **[Quick Start](#quick-start)** - Get running in 5 minutes
 
 ### Core Documentation
 - **[API Reference](./docs/API.md)** - Complete API documentation
 - **[Architecture Guide](./ARCHITECTURE.md)** - Visual architecture overview
+- **[Layered Architecture](./LAYERED_ARCHITECTURE.md)** ⭐ NEW - Deep dive into layers
 - **[Custom Tools Guide](./docs/CUSTOM_TOOLS.md)** - Build your own tools
 
 ### Testing & Validation

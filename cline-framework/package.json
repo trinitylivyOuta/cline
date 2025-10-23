@@ -17,7 +17,12 @@
     "test": "npm run build && node test/basic-test.js",
     "demo": "npm run build && node demo/simple-agent.js",
     "demo:file-ops": "npm run build && node demo/file-operations.js",
-    "demo:custom-host": "npm run build && node demo/custom-host.js"
+    "demo:custom-host": "npm run build && node demo/custom-host.js",
+    "demo:layer1": "npm run build && node demo/layer1-raw-api.js",
+    "demo:layer2": "npm run build && node demo/layer2-simple-app.js",
+    "demo:layer3": "npm run build && node demo/simple-agent.js",
+    "demo:layer4": "npm run build && node demo/layer4-orchestration.js",
+    "demo:all-layers": "npm run demo:layer1 && npm run demo:layer2 && npm run demo:layer3 && npm run demo:layer4"
   },
   "keywords": [
     "agent",
@@ -31,12 +36,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.37.0",
-    "openai": "^4.83.0",
     "axios": "^1.12.0",
+    "openai": "^4.83.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.19.23",
     "typescript": "^5.4.5"
   },
   "engines": {
