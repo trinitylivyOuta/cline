@@ -1,12 +1,9 @@
 node_modules/
 dist/
-*.js
-*.d.ts
-*.js.map
-!demo/**/*.js
+*.log
 .env
 .DS_Store
 demo-output/
-*.log
 coverage/
 .nyc_output/
+*.tsbuildinfo

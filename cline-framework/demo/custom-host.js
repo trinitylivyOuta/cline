@@ -2,7 +2,7 @@
  * Demo showing how to create a custom host adapter
  */
 
-const { ClineAgent } = require('../core/agent');
+const { ClineAgent } = require('../dist/core/agent');
 
 /**
  * Custom host that logs all operations

@@ -13,16 +13,9 @@ export type MessageRole = 'user' | 'assistant';
 export type ContentBlockType = 'text' | 'image' | 'tool_use' | 'tool_result';
 
 /**
- * Base content block
- */
-export interface ContentBlock {
-  type: ContentBlockType;
-}
-
-/**
  * Text content block
  */
-export interface TextBlock extends ContentBlock {
+export interface TextBlock {
   type: 'text';
   text: string;
 }
@@ -30,7 +23,7 @@ export interface TextBlock extends ContentBlock {
 /**
  * Image content block
  */
-export interface ImageBlock extends ContentBlock {
+export interface ImageBlock {
   type: 'image';
   source: {
     type: 'base64' | 'url';
@@ -42,7 +35,7 @@ export interface ImageBlock extends ContentBlock {
 /**
  * Tool use block (LLM requesting to use a tool)
  */
-export interface ToolUseBlock extends ContentBlock {
+export interface ToolUseBlock {
   type: 'tool_use';
   id: string;
   name: string;
@@ -52,12 +45,17 @@ export interface ToolUseBlock extends ContentBlock {
 /**
  * Tool result block (result of tool execution)
  */
-export interface ToolResultBlock extends ContentBlock {
+export interface ToolResultBlock {
   type: 'tool_result';
   tool_use_id: string;
   content: string | ContentBlock[];
   is_error?: boolean;
 }
+
+/**
+ * Union type for all content blocks
+ */
+export type ContentBlock = TextBlock | ImageBlock | ToolUseBlock | ToolResultBlock;
 
 /**
  * Message in the conversation
@@ -138,6 +136,7 @@ export interface ToolParameterSchema {
   type: 'object';
   properties: Record<string, any>;
   required?: string[];
+  [key: string]: any;
 }
 
 /**
@@ -243,7 +242,7 @@ export type ApiStreamChunk =
   | { type: 'content_block_delta'; delta: { text?: string } }
   | { type: 'content_block_stop' }
   | { type: 'message_start'; message: { role: string } }
-  | { type: 'message_delta'; delta: { stop_reason?: string } }
+  | { type: 'message_delta'; delta: { stop_reason?: string | null } }
   | { type: 'message_stop' }
   | { type: 'usage'; usage: { input_tokens: number; output_tokens: number } };
 

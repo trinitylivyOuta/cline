@@ -2,8 +2,8 @@
  * Simple demo of the Cline Framework in a terminal environment
  */
 
-const { ClineAgent } = require('../core/agent');
-const { TerminalHost } = require('../host');
+const { ClineAgent } = require('../dist/core/agent');
+const { TerminalHost } = require('../dist/host');
 
 async function main() {
   console.log('🤖 Cline Framework Demo\n');

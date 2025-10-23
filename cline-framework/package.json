@@ -2,19 +2,22 @@
   "name": "@cline/framework",
   "version": "0.1.0",
   "description": "Reusable agent framework extracted from Cline - execute AI agents in VSCode or terminal",
-  "main": "./core/index.js",
-  "types": "./core/index.d.ts",
+  "main": "./dist/core/index.js",
+  "types": "./dist/core/index.d.ts",
   "exports": {
-    ".": "./core/index.js",
-    "./core": "./core/index.js",
-    "./host": "./host/index.js",
-    "./services": "./services/index.js"
+    ".": "./dist/core/index.js",
+    "./core": "./dist/core/index.js",
+    "./host": "./dist/host/index.js",
+    "./services": "./dist/services/index.js"
   },
   "scripts": {
     "build": "tsc -b",
     "watch": "tsc -b --watch",
-    "clean": "rm -rf dist core/*.js host/*.js services/*.js cli/*.js",
-    "demo": "node demo/simple-agent.js"
+    "clean": "rm -rf dist",
+    "test": "npm run build && node test/basic-test.js",
+    "demo": "npm run build && node demo/simple-agent.js",
+    "demo:file-ops": "npm run build && node demo/file-operations.js",
+    "demo:custom-host": "npm run build && node demo/custom-host.js"
   },
   "keywords": [
     "agent",

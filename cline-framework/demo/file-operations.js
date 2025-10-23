@@ -2,8 +2,8 @@
  * Demo showing file operations with the Cline Framework
  */
 
-const { ClineAgent } = require('../core/agent');
-const { TerminalHost } = require('../host');
+const { ClineAgent } = require('../dist/core/agent');
+const { TerminalHost } = require('../dist/host');
 const path = require('path');
 const fs = require('fs').promises;
 
