@@ -41,3 +41,9 @@ export type {
 export * from './types';
 export * from './tools';
 export * from './providers';
+
+// Production features
+export * from './context-manager';
+export * from './retry-handler';
+export * from './config-validator';
+export * from './logger';
